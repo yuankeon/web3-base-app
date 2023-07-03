@@ -13,6 +13,10 @@
     "prepare": "husky install",
     "commitlint": "commitlint --config commitlint.config.cjs -e -V"
   },
+  "nano-staged": {
+    "*.{html,tsx,ts,js,json,md}": "prettier --write",
+    "*.{ts,js,tsx}": "eslint --fix"
+  },
   "dependencies": {
     "antd": "^5.6.4",
     "axios": "^1.4.0",
@@ -35,6 +39,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
     "husky": "^8.0.0",
+    "nano-staged": "^0.8.0",
     "prettier": "^2.8.8",
     "typescript": "^5.0.2",
     "vite": "^4.3.9"
