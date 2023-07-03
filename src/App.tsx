@@ -1,19 +1,17 @@
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { SvgIcon } from './components/SvgIcon'
 
 function App() {
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="container">
+        <div className="title">
+          <SvgIcon iconName="github" width="24px" height="24px" />
+          <span>Quick start of your web3 app</span>
+          <div style={{ flexGrow: 1 }} />
+          <SvgIcon iconName="arrow-up-right" />
+        </div>
       </div>
-      <h1>Vite + React</h1>
       <div className="background-radial-gradient"></div>
     </>
   )
