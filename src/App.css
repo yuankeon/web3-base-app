@@ -2,6 +2,10 @@
   width: 480px;
 }
 
+.container a {
+  text-decoration: none;
+}
+
 .title {
   background: radial-gradient(182.71% 205.59% at 2.81% 7.69%, rgba(130, 71, 229, 0.2) 0%, rgba(167, 202, 255, 0.2) 100%);
   border-radius: 20px;
@@ -11,6 +15,11 @@
   padding: 20px;
   display: flex;
   align-items: center;
+}
+
+.title:hover {
+  opacity: 0.8;
+  cursor: pointer;
 }
 
 .title span {
