@@ -3,6 +3,7 @@ import { getTokens } from '@/api/approve'
 import { SvgIcon } from '@/components/SvgIcon'
 import { Radio, RadioChangeEvent, message } from 'antd'
 import { useEffect, useState } from 'react'
+import { useWeb3React } from '@web3-react/core'
 
 const options = [
   { label: 'DEV', value: 'dev' },
@@ -12,6 +13,7 @@ const options = [
 
 function App() {
   const [env, setEnv] = useState('dev')
+  const { chainId } = useWeb3React()
 
   const onChangeEnv = (event: RadioChangeEvent) => {
     setEnv(event.target.value)
@@ -32,17 +34,22 @@ function App() {
     getPairList()
   }, [env])
 
+  console.log(chainId)
+
   return (
     <>
       <div className="container">
-        Environment:
-        <Radio.Group
-          options={options}
-          onChange={onChangeEnv}
-          value={env}
-          optionType="button"
-          buttonStyle="solid"
-        />
+        <div className="card">
+          当前环境:
+          <Radio.Group
+            options={options}
+            onChange={onChangeEnv}
+            value={env}
+            optionType="button"
+            buttonStyle="solid"
+          />
+          授权合约:
+        </div>
         <a href="https://github.com/yuankeon/web3-base-app" target="__blank">
           <div className="title">
             <SvgIcon iconName="github" width="24px" height="24px" />
