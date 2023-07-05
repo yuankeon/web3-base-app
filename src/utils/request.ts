@@ -3,11 +3,12 @@
  */
 import { message } from 'antd'
 import axios from 'axios'
+import { EnvMap } from '@/config'
 
 //第一步:利用axios对象的create方法,去创建axios实例(其他的配置:基础路径、超时的时间)
 const request = axios.create({
-  baseURL: '', // axios请求接口时候自动携带的基础路径
-  timeout: 5000, //超时的时间的设置
+  baseURL: EnvMap['dev'], // axios请求接口时候自动携带的基础路径
+  timeout: 10000, //超时的时间的设置
 })
 
 // request 实例添加请求拦截器
@@ -23,7 +24,7 @@ request.interceptors.response.use(
   },
   (error) => {
     //失败回调:处理http网络错误
-    message.error({ content: error.response.data.message })
+    message.error({ content: error.message })
     return Promise.reject(error)
   },
 )

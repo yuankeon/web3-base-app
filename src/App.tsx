@@ -43,7 +43,7 @@ function App() {
 
   useEffect(() => {
     function getPairList() {
-      getTokens(env)
+      getTokens()
         .then((res) => {
           if (res.code === 200) {
             const data = reduceData(res.data)
@@ -62,17 +62,24 @@ function App() {
   }, [env])
 
   const connectWallet = () => {
-    metaMask.activate()
+    metaMask.activate().catch(() => {
+      message.error('Failed to connect eagerly to metamask')
+    })
   }
 
   return (
     <>
       <div className="header">
+        <img src="/pic.jpg" alt="" className="logo" />
         {account ? (
           <div className="header-wallet">
-            {getName(metaMask)}
-            <Avatar account={account} />
-            <span>{getShortAddress(account)}</span>
+            {getName(metaMask)}:
+            <div className="header-account">
+              <div className="header-account-icon">
+                <Avatar account={account} />
+              </div>
+              <span>{getShortAddress(account)}</span>
+            </div>
           </div>
         ) : (
           <Button type="primary" onClick={connectWallet} size="large">
