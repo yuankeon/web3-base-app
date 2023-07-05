@@ -18,6 +18,7 @@
     "*.{ts,js,tsx}": "eslint --fix"
   },
   "dependencies": {
+    "@metamask/jazzicon": "^2.0.0",
     "@web3-react/core": "^8.2.0",
     "@web3-react/metamask": "^8.2.1",
     "antd": "^5.6.4",

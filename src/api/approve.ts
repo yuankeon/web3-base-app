@@ -9,7 +9,7 @@ const EnvMap: { [key: string]: string } = {
 const GET_TOKEN_URL = '/defed/dex/getPairList'
 
 export function getTokens(env = 'dev') {
-  return request({
+  return request<any, any>({
     url: `${EnvMap[env]}${GET_TOKEN_URL}`,
     method: 'GET',
   })
