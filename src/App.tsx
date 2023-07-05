@@ -1,32 +1,17 @@
 import './App.css'
 import { getTokens } from '@/api/approve'
 import { SvgIcon } from '@/components/SvgIcon'
-import { Button, Radio, RadioChangeEvent, message, Input, Divider } from 'antd'
+import { Button, message, Input, Divider } from 'antd'
 import { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { metaMask } from '@/connectors/metaMask'
 import { Avatar } from '@/components/Avatar'
 import { getName, getShortAddress, reduceData } from '@/utils'
 import { PairItem } from '@/types/app'
-import { TokenMaps } from '@/config/tokens'
-
-const options = [
-  { label: 'DEV', value: 'dev' },
-  { label: 'TEST', value: 'test' },
-  { label: 'PROD', value: 'prod' },
-]
+import { TokenMaps, TITLE } from '@/config'
 
 function App() {
-  const [env, setEnv] = useState('dev')
   const { account } = useWeb3React()
-
-  // console.log({
-  //   chainId,
-  //   account,
-  //   isActivating,
-  //   isActive,
-  //   provider,
-  // })
 
   // attempt to connect eagerly on mount 刷新页面保持连接
   useEffect(() => {
@@ -34,10 +19,6 @@ function App() {
       console.debug('Failed to connect eagerly to metamask')
     })
   }, [])
-
-  const onChangeEnv = (event: RadioChangeEvent) => {
-    setEnv(event.target.value)
-  }
 
   const [pairList, setPairList] = useState<PairItem[] | undefined>()
 
@@ -59,7 +40,7 @@ function App() {
         })
     }
     getPairList()
-  }, [env])
+  }, [])
 
   const connectWallet = () => {
     metaMask.activate().catch(() => {
@@ -92,13 +73,7 @@ function App() {
         <div className="card">
           <div className="form-item">
             <span>当前环境:</span>
-            <Radio.Group
-              options={options}
-              onChange={onChangeEnv}
-              value={env}
-              optionType="button"
-              buttonStyle="solid"
-            />
+            <span>DEV</span>
           </div>
 
           <div className="form-item">
@@ -106,6 +81,14 @@ function App() {
             <Input style={{ width: '80%' }} />
           </div>
           <Divider plain>Token List</Divider>
+
+          <div className="list-title">
+            {TITLE.map((item) => (
+              <div key={item.title} style={{ width: item.width }}>
+                {item.title}
+              </div>
+            ))}
+          </div>
 
           <div className="pair-content">
             {!pairList

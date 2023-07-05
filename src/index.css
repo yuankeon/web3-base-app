@@ -1,6 +1,7 @@
 :root {
   --base-backgoundColor: #ffffff;
   --base-textColor: 13, 17, 28;
+  --base-textSecondary: 120, 130, 140;
   --base-borderColor: 210, 217, 238;
   --base-buttonBackground: 245, 246, 252;
 }

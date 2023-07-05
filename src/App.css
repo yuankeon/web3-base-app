@@ -51,6 +51,13 @@
   border: 1px solid rgb(var(--base-borderColor));
 }
 
+.list-title {
+  color: rgb(var(--base-textSecondary));
+  font-size: 12px;
+  display: flex;
+  margin-bottom: 10px;
+}
+
 .title {
   width: 480px;
   margin-top: 20px;
@@ -90,7 +97,7 @@
 .pair-list {
   display: flex;
   align-items: center;
-  padding: 8px 0;
+  padding: 12px 0;
 }
 
 .pair-list span {
