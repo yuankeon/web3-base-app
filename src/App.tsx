@@ -1,25 +1,15 @@
 import './App.css'
 import { getTokens } from '@/api/approve'
 import { SvgIcon } from '@/components/SvgIcon'
-import { Button, message, Input, Divider } from 'antd'
+import { message, Input, Divider } from 'antd'
 import { useEffect, useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
-import { metaMask } from '@/connectors/metaMask'
-import { Avatar } from '@/components/Avatar'
-import { getName, getShortAddress, reduceData } from '@/utils'
+import { reduceData } from '@/utils'
 import { PairItem } from '@/types/app'
 import { TokenMaps, TITLE } from '@/config'
+import { Footer } from '@/layout/Footer'
+import { Header } from '@/layout/Header'
 
 function App() {
-  const { account } = useWeb3React()
-
-  // attempt to connect eagerly on mount 刷新页面保持连接
-  useEffect(() => {
-    void metaMask.connectEagerly().catch(() => {
-      console.debug('Failed to connect eagerly to metamask')
-    })
-  }, [])
-
   const [pairList, setPairList] = useState<PairItem[] | undefined>()
 
   useEffect(() => {
@@ -42,33 +32,9 @@ function App() {
     getPairList()
   }, [])
 
-  const connectWallet = () => {
-    metaMask.activate().catch(() => {
-      message.error('Failed to connect eagerly to metamask')
-    })
-  }
-
   return (
     <>
-      <div className="header">
-        <img src="/pic.jpg" alt="" className="logo" />
-        {account ? (
-          <div className="header-wallet">
-            {getName(metaMask)}:
-            <div className="header-account">
-              <div className="header-account-icon">
-                <Avatar account={account} />
-              </div>
-              <span>{getShortAddress(account)}</span>
-            </div>
-          </div>
-        ) : (
-          <Button type="primary" onClick={connectWallet} size="large">
-            Connect Wallet
-          </Button>
-        )}
-      </div>
-
+      <Header />
       <div className="container">
         <div className="card">
           <div className="form-item">
@@ -105,14 +71,7 @@ function App() {
                 ))}
           </div>
         </div>
-        <a href="https://github.com/yuankeon/web3-base-app" target="__blank">
-          <div className="title">
-            <SvgIcon iconName="github" width="24px" height="24px" />
-            <span>Quick start of your web3 app</span>
-            <div style={{ flexGrow: 1 }} />
-            <SvgIcon iconName="arrow-up-right" />
-          </div>
-        </a>
+        <Footer />
       </div>
       <div className="background-radial-gradient"></div>
     </>
