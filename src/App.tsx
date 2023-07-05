@@ -1,7 +1,7 @@
 import './App.css'
 import { getTokens } from '@/api/approve'
 import { SvgIcon } from '@/components/SvgIcon'
-import { message, Input, Divider } from 'antd'
+import { message, Input, Divider, Button } from 'antd'
 import { useEffect, useState } from 'react'
 import { reduceData } from '@/utils'
 import { PairItem } from '@/types/app'
@@ -49,8 +49,14 @@ function App() {
           <Divider plain>Token List</Divider>
 
           <div className="list-title">
-            {TITLE.map((item) => (
-              <div key={item.title} style={{ width: item.width }}>
+            {TITLE.map((item, index) => (
+              <div
+                key={item.title}
+                style={{
+                  width: item.width,
+                  textAlign: index === 3 ? 'center' : 'left',
+                }}
+              >
                 {item.title}
               </div>
             ))}
@@ -61,12 +67,27 @@ function App() {
               ? 'loading...'
               : pairList.map((item) => (
                   <div key={item.tokenAddress} className="pair-list">
-                    <SvgIcon
-                      iconName={TokenMaps[item.tokenName]}
-                      width="20px"
-                      height="20px"
-                    />
-                    <span>{item.symbol}</span>
+                    <div
+                      style={{
+                        width: TITLE[0].width,
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <SvgIcon
+                        iconName={TokenMaps[item.tokenName]}
+                        width="20px"
+                        height="20px"
+                      />
+                      <span>{item.symbol}</span>
+                    </div>
+                    <div style={{ width: TITLE[1].width }}>0</div>
+                    <div style={{ width: TITLE[2].width }}>
+                      <Input style={{ width: '80%' }} />
+                    </div>
+                    <div style={{ width: TITLE[3].width, textAlign: 'center' }}>
+                      <Button type="link">Approve</Button>
+                    </div>
                   </div>
                 ))}
           </div>
