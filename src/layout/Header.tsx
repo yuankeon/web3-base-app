@@ -15,6 +15,23 @@ export function Header() {
   const [loading, setLoading] = useState(false)
   const { signPersonalData } = useWeb3Data()
 
+  useEffect(() => {
+    //用户直接切换账号
+    const ethereum = window.ethereum
+    if (ethereum) {
+      const handleAccountsChanged = () => {
+        console.log('account changed')
+        localStorage.removeItem('token')
+        setUserData(undefined)
+      }
+      ethereum.on('accountsChanged', handleAccountsChanged)
+      return () => {
+        ethereum.removeListener('accountsChanged', handleAccountsChanged)
+      }
+    }
+    return undefined
+  }, [])
+
   // attempt to connect eagerly on mount 刷新页面保持连接
   useEffect(() => {
     void metaMask.connectEagerly().catch(() => {
