@@ -3,23 +3,52 @@ import { getName, getShortAddress } from '@/utils'
 import { Button, Tooltip, message } from 'antd'
 import { useWeb3React } from '@web3-react/core'
 import { metaMask } from '@/connectors/metaMask'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { SvgIcon } from '@/components/SvgIcon'
+import { AccountData } from '@/types/app'
+import { getNonce, postToken, getUserInfo } from '@/api/user'
+import { useWeb3Data } from '@/hooks/useWeb3Data'
 
 export function Header() {
   const { account } = useWeb3React()
+  const [userData, setUserData] = useState<AccountData>()
+  const [loading, setLoading] = useState(false)
+  const { signPersonalData } = useWeb3Data()
 
   // attempt to connect eagerly on mount 刷新页面保持连接
   useEffect(() => {
     void metaMask.connectEagerly().catch(() => {
-      console.debug('Failed to connect eagerly to metamask')
+      message.warning('Failed to connect eagerly to metamask')
     })
   }, [])
 
   const connectWallet = () => {
     metaMask.activate().catch(() => {
-      message.error('Failed to connect eagerly to metamask')
+      message.error('Failed to connect to metamask')
     })
+  }
+
+  const handleLogin = async () => {
+    if (!account) {
+      message.error('Failed to connect to metamask')
+      return
+    }
+    setLoading(true)
+    try {
+      const nonceResult = await getNonce(account)
+      const text = `Sign in with DEFED Distributed Digital Identity. Nonce:${nonceResult.data.nonce}`
+      const signature = await signPersonalData(text)
+      const tokenResult = await postToken(account, signature)
+      //缓存 jwt token 信息
+      localStorage.setItem('token', tokenResult.data.jwt)
+      //请求用户信息
+      const userResult = await getUserInfo()
+      setLoading(false)
+      setUserData(userResult.data)
+    } catch (error) {
+      setLoading(false)
+      message.error((error as Error).message)
+    }
   }
 
   return (
@@ -42,6 +71,21 @@ export function Header() {
             </div>
             <span>{getShortAddress(account)}</span>
           </div>
+          {!userData ? (
+            <Button type="primary" onClick={handleLogin} loading={loading}>
+              Login
+            </Button>
+          ) : (
+            <div className="header-wallet">
+              <span>Proxy:</span>
+              <div className="header-account">
+                <div className="header-account-icon">
+                  <Avatar account={userData.proxyAddress} />
+                </div>
+                <span>{getShortAddress(userData.proxyAddress)}</span>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <Button type="primary" onClick={connectWallet} size="large">

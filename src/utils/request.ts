@@ -13,6 +13,11 @@ const request = axios.create({
 
 // request 实例添加请求拦截器
 request.interceptors.request.use((config) => {
+  //从缓存中获取 token 信息
+  const token = localStorage.getItem('token')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
   return config
 })
 
@@ -20,10 +25,12 @@ request.interceptors.request.use((config) => {
 request.interceptors.response.use(
   (response) => {
     //成功回调 => 简化数据
-    return response.data
+    if (response.data.code === 200) return response.data
+    //【抛出需要客户端处理的错误】
+    throw new Error(response.data.msg)
   },
   (error) => {
-    //失败回调:处理http网络错误
+    //失败回调:处理http网络错误【处理服务器端的错误】
     message.error({ content: error.message })
     return Promise.reject(error)
   },
