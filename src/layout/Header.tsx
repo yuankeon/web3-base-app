@@ -22,6 +22,23 @@ export function Header() {
     })
   }, [])
 
+  const initUserInfo = async () => {
+    getUserInfo()
+      .then((userResult) => {
+        setUserData(userResult.data)
+      })
+      .catch((error: Error) => {
+        message.error(error.message)
+      })
+  }
+
+  //刷新页面使用缓存 token 去请求用户信息
+  useEffect(() => {
+    if (account && localStorage.getItem('token')) {
+      initUserInfo()
+    }
+  }, [account])
+
   const connectWallet = () => {
     metaMask.activate().catch(() => {
       message.error('Failed to connect to metamask')
@@ -77,7 +94,7 @@ export function Header() {
             </Button>
           ) : (
             <div className="header-wallet">
-              <span>Proxy:</span>
+              <span style={{ marginLeft: 8 }}>Proxy:</span>
               <div className="header-account">
                 <div className="header-account-icon">
                   <Avatar account={userData.proxyAddress} />
