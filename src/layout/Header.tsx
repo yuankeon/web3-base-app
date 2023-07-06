@@ -10,7 +10,7 @@ import { getNonce, postToken, getUserInfo } from '@/api/user'
 import { useWeb3Data } from '@/hooks/useWeb3Data'
 
 export function Header() {
-  const { account } = useWeb3React()
+  const { account, isActive } = useWeb3React()
   const [userData, setUserData] = useState<AccountData>()
   const [loading, setLoading] = useState(false)
   const { signPersonalData } = useWeb3Data()
@@ -18,7 +18,7 @@ export function Header() {
   useEffect(() => {
     //用户直接切换账号
     const ethereum = window.ethereum
-    if (ethereum) {
+    if (ethereum && isActive) {
       const handleAccountsChanged = () => {
         console.log('account changed')
         localStorage.removeItem('token')
@@ -30,7 +30,7 @@ export function Header() {
       }
     }
     return undefined
-  }, [])
+  }, [isActive])
 
   // attempt to connect eagerly on mount 刷新页面保持连接
   useEffect(() => {

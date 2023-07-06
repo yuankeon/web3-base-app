@@ -61,30 +61,36 @@ export function ContentList() {
         {!pairList
           ? 'loading...'
           : pairList.map((item) => (
-              <div key={item.tokenAddress} className="pair-list">
-                <div
-                  style={{
-                    width: TITLE[0].width,
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                >
-                  <SvgIcon
-                    iconName={TokenMaps[item.tokenName]}
-                    width="20px"
-                    height="20px"
-                  />
-                  <span>{item.symbol}</span>
-                </div>
-                <div style={{ width: TITLE[1].width }}>0</div>
-                <div style={{ width: TITLE[2].width }}>
-                  <Input style={{ width: '80%' }} />
-                </div>
-                <div style={{ width: TITLE[3].width, textAlign: 'center' }}>
-                  <Button type="link">Approve</Button>
-                </div>
-              </div>
+              <ContentListItem key={item.tokenAddress} item={item} />
             ))}
+      </div>
+    </div>
+  )
+}
+
+function ContentListItem({ item }: { item: PairItem }) {
+  return (
+    <div className="pair-list">
+      <div
+        style={{
+          width: TITLE[0].width,
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <SvgIcon
+          iconName={TokenMaps[item.tokenName]}
+          width="20px"
+          height="20px"
+        />
+        <span>{item.symbol}</span>
+      </div>
+      <div style={{ width: TITLE[1].width }}>0</div>
+      <div style={{ width: TITLE[2].width }}>
+        <Input style={{ width: '80%' }} />
+      </div>
+      <div style={{ width: TITLE[3].width, textAlign: 'center' }}>
+        <Button type="link">Approve</Button>
       </div>
     </div>
   )
