@@ -1,9 +1,21 @@
 :root {
   --base-backgoundColor: #ffffff;
+  --base-borderColor: 210, 217, 238, 1;
   --base-textColor: 13, 17, 28;
   --base-textSecondary: 120, 130, 140;
-  --base-borderColor: 210, 217, 238;
-  --base-buttonBackground: 245, 246, 252;
+  --base-buttonBackground: 245, 246, 252, 1;
+  --background: radial-gradient(100% 100% at 50% 0%, rgba(130, 71, 229, 0.2) 0%, rgba(200, 168, 255, 0.05) 52.6%, rgba(0, 0, 0, 0) 100%), rgb(255, 255, 255);
+  --titleBackground: radial-gradient(182.71% 205.59% at 2.81% 7.69%, rgba(130, 71, 229, 0.2) 0%, rgba(167, 202, 255, 0.2) 100%);
+}
+
+.dark {
+  --base-backgoundColor: #0d111c;
+  --base-borderColor: 152, 161, 192, 0.24;
+  --base-textColor: 255, 255, 255;
+  --base-textSecondary: 152, 161, 192;
+  --base-buttonBackground: 19, 26, 42, 1;
+  --background: radial-gradient(100% 100% at 50% 0%, rgba(130, 71, 229, 0.2) 0%, rgba(200, 168, 255, 0.05) 52.6%, rgba(0, 0, 0, 0) 100%), rgb(13, 14, 14);
+  --titleBackground: radial-gradient(100% 93.36% at 0% 6.64%, rgba(160, 108, 247, 0.1) 0%, rgba(82, 32, 166, 0.1) 100%);
 }
 
 body {

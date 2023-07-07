@@ -34,7 +34,7 @@
   height: 36px;
   padding: 0 14px;
   margin-left: 8px;
-  background-color: rgb(var(--base-buttonBackground));
+  background-color: rgba(var(--base-buttonBackground));
 }
 
 .header-account-icon {
@@ -59,7 +59,7 @@
   padding: 10px 20px;
   background: var(--base-backgoundColor);
   border-radius: 16px;
-  border: 1px solid rgb(var(--base-borderColor));
+  border: 1px solid rgba(var(--base-borderColor));
 }
 
 .list-title {
@@ -72,7 +72,7 @@
 .title {
   width: 480px;
   margin-top: 20px;
-  background: radial-gradient(182.71% 205.59% at 2.81% 7.69%, rgba(130, 71, 229, 0.2) 0%, rgba(167, 202, 255, 0.2) 100%);
+  background: var(--titleBackground);
   border-radius: 20px;
   color: #8247e5;
   font-size: 18px;
@@ -125,6 +125,5 @@
   height: 100vh;
   transform: unset;
   z-index: -1;
-  background: radial-gradient(100% 100% at 50% 0%, rgba(130, 71, 229, 0.2) 0%, rgba(200, 168, 255, 0.05) 52.6%, rgba(0, 0, 0, 0) 100%), rgb(255, 255, 255);
-  /* background: radial-gradient(100% 100% at 50% 0%, rgba(130, 71, 229, 0.2) 0%, rgba(200, 168, 255, 0.05) 52.6%, rgba(0, 0, 0, 0) 100%), rgb(13, 14, 14); */
+  background: var(--background);
 }
