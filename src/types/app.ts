@@ -15,6 +15,12 @@ export interface AccountData {
   privateKey: string
 }
 
+export interface ApproveData {
+  amountDecimal: string
+  approveToken: string
+  spender: string
+}
+
 export type transactionType = {
   value?: string
   from?: string
