@@ -4,20 +4,22 @@ import { message, Input, Divider, Button, InputRef, Spin } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { reduceData } from '@/utils'
 import { PairItem } from '@/types/app'
-import { TokenMaps, TITLE } from '@/config'
+import { TokenMaps, TITLE, TokenDecimalMap } from '@/config'
 import { isAddress } from '@ethersproject/address'
 import { useApprove } from '@/hooks/useApprove'
 import { useUserStore } from '@/store'
+import { removeDecimals } from '@/utils/math'
 
 export function ContentList() {
   const [pairList, setPairList] = useState<PairItem[] | undefined>()
   const inputRef = useRef<InputRef>(null)
 
   const userData = useUserStore((state) => state.userData)
+  const { signApprove } = useApprove()
 
   function getPairList() {
     getTokens()
-      .then((res) => {
+      .then(async (res) => {
         const data = reduceData(res.data)
         setPairList(data)
       })
@@ -31,8 +33,6 @@ export function ContentList() {
   useEffect(() => {
     getPairList()
   }, [])
-
-  const { signApprove } = useApprove()
 
   const handleApprove = (pair: PairItem, input: InputRef | null) => {
     if (!userData?.proxyAddress) {
@@ -130,7 +130,11 @@ function ContentListItem({
         />
         <span>{item.symbol}</span>
       </div>
-      <div style={{ width: TITLE[1].width }}>{item.allowance}</div>
+      <div style={{ width: TITLE[1].width }}>
+        {item.allowance
+          ? removeDecimals(item.allowance, TokenDecimalMap[item.tokenName])
+          : '~'}
+      </div>
       <div style={{ width: TITLE[2].width }}>
         <Input style={{ width: '80%' }} ref={itemImputRef} />
       </div>

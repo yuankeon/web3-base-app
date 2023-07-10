@@ -13,10 +13,14 @@ export function Header() {
   const { account, isActive } = useWeb3React()
   const [loading, setLoading] = useState(false)
   const { signPersonalData } = useWeb3Data()
-  const [userData, setUserData] = useUserStore((state) => [
-    state.userData,
-    state.setUserData,
-  ])
+  const [userData, setUserData, darkMode, setDarkMode] = useUserStore(
+    (state) => [
+      state.userData,
+      state.setUserData,
+      state.darkMode,
+      state.setDarkMode,
+    ],
+  )
 
   useEffect(() => {
     //用户直接切换账号
@@ -88,14 +92,30 @@ export function Header() {
     }
   }
 
+  const toggleTheme = () => {
+    const html = document.querySelector('html')
+    if (darkMode) {
+      html?.classList.remove('dark')
+    } else {
+      html?.classList.add('dark')
+    }
+    setDarkMode()
+  }
+
   return (
     <div className="header">
       <img src="/pic.jpg" alt="" className="logo" />
       <div style={{ flexGrow: 1 }} />
-      <Tooltip placement="bottom" title={'turn off the light'}>
-        <Button className="mode">
-          {/* dark */}
-          <SvgIcon iconName="light" width="20px" height="20px" />
+      <Tooltip
+        placement="bottom"
+        title={`turn ${darkMode ? 'on' : 'off'} the light`}
+      >
+        <Button className="mode" onClick={toggleTheme}>
+          <SvgIcon
+            iconName={darkMode ? 'dark' : 'light'}
+            width="20px"
+            height="20px"
+          />
         </Button>
       </Tooltip>
 

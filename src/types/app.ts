@@ -2,7 +2,7 @@ export interface PairItem {
   tokenAddress: string
   tokenName: string
   symbol: string
-  allowance: string
+  allowance?: string
 }
 
 export interface AccountData {
