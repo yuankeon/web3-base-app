@@ -1,6 +1,6 @@
 import { getTokens } from '@/api/approve'
 import { SvgIcon } from '@/components/SvgIcon'
-import { message, Input, Divider, Button, InputRef } from 'antd'
+import { message, Input, Divider, Button, InputRef, Spin } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { reduceData } from '@/utils'
 import { PairItem } from '@/types/app'
@@ -87,15 +87,19 @@ export function ContentList() {
       </div>
 
       <div className="pair-content">
-        {!pairList
-          ? 'loading...'
-          : pairList.map((item) => (
-              <ContentListItem
-                key={item.tokenAddress}
-                item={item}
-                handleApprove={handleApprove}
-              />
-            ))}
+        {!pairList ? (
+          <Spin tip="Loading...">
+            <div style={{ width: '100%', height: 336 }}></div>
+          </Spin>
+        ) : (
+          pairList.map((item) => (
+            <ContentListItem
+              key={item.tokenAddress}
+              item={item}
+              handleApprove={handleApprove}
+            />
+          ))
+        )}
       </div>
     </div>
   )
@@ -126,7 +130,7 @@ function ContentListItem({
         />
         <span>{item.symbol}</span>
       </div>
-      <div style={{ width: TITLE[1].width }}>0</div>
+      <div style={{ width: TITLE[1].width }}>{item.allowance}</div>
       <div style={{ width: TITLE[2].width }}>
         <Input style={{ width: '80%' }} ref={itemImputRef} />
       </div>
