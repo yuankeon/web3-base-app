@@ -5,15 +5,18 @@ import { useWeb3React } from '@web3-react/core'
 import { metaMask } from '@/connectors/metaMask'
 import { useEffect, useState } from 'react'
 import { SvgIcon } from '@/components/SvgIcon'
-import { AccountData } from '@/types/app'
 import { getNonce, postToken, getUserInfo } from '@/api/user'
 import { useWeb3Data } from '@/hooks/useWeb3Data'
+import { useUserStore } from '@/store'
 
 export function Header() {
   const { account, isActive } = useWeb3React()
-  const [userData, setUserData] = useState<AccountData>()
   const [loading, setLoading] = useState(false)
   const { signPersonalData } = useWeb3Data()
+  const [userData, setUserData] = useUserStore((state) => [
+    state.userData,
+    state.setUserData,
+  ])
 
   useEffect(() => {
     //用户直接切换账号

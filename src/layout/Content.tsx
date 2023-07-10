@@ -7,20 +7,19 @@ import { PairItem } from '@/types/app'
 import { TokenMaps, TITLE } from '@/config'
 import { isAddress } from '@ethersproject/address'
 import { useApprove } from '@/hooks/useApprove'
+import { useUserStore } from '@/store'
 
 export function ContentList() {
   const [pairList, setPairList] = useState<PairItem[] | undefined>()
   const inputRef = useRef<InputRef>(null)
 
+  const userData = useUserStore((state) => state.userData)
+
   function getPairList() {
     getTokens()
       .then((res) => {
-        if (res.code === 200) {
-          const data = reduceData(res.data)
-          setPairList(data)
-        } else {
-          throw new Error('请求成功了, 但code不为200')
-        }
+        const data = reduceData(res.data)
+        setPairList(data)
       })
       .catch((error: Error) => {
         message.error({
@@ -36,6 +35,10 @@ export function ContentList() {
   const { signApprove } = useApprove()
 
   const handleApprove = (pair: PairItem, input: InputRef | null) => {
+    if (!userData?.proxyAddress) {
+      message.error('请先登录')
+      return
+    }
     //授权合约
     const spenderAddress = inputRef.current?.input?.value || ''
     if (isAddress(spenderAddress)) {

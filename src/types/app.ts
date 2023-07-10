@@ -15,6 +15,8 @@ export interface AccountData {
   privateKey: string
 }
 
+export type UserData = AccountData | undefined
+
 export interface ApproveData {
   amountDecimal: string
   approveToken: string

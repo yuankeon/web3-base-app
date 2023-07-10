@@ -7,7 +7,7 @@ import { EnvMap } from '@/config'
 
 //第一步:利用axios对象的create方法,去创建axios实例(其他的配置:基础路径、超时的时间)
 const request = axios.create({
-  baseURL: EnvMap['dev'].http, // axios请求接口时候自动携带的基础路径
+  baseURL: EnvMap['test'].http, // axios请求接口时候自动携带的基础路径
   timeout: 10000, //超时的时间的设置
 })
 
