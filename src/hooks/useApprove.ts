@@ -1,17 +1,22 @@
 import ERC20_ABI from '@/abi/erc20.json'
-import { ApproveData, PairItem } from '@/types/app'
+import { ApproveData, ApproveInterface, PairItem } from '@/types/app'
 import Web3 from 'web3'
-import { POLYGON_RPC } from '@/config'
+import { POLYGON_RPC, getTypeDataV2 } from '@/config'
 import { valueToBigNumber } from '@/utils/math'
+import { useWeb3Data } from './useWeb3Data'
+import { useWeb3React } from '@web3-react/core'
+import { proxyApprove } from '@/api/approve'
 
 export function useApprove() {
   const web3 = new Web3(POLYGON_RPC)
+  const { signTxData } = useWeb3Data()
+  const { chainId } = useWeb3React()
 
   //批量查询所有 token 对 sender 合约的 allowance
   const batchTokenAllowance = async ({
-    proxy = '0xed9a49977b8a12dc050169933a57999a2415a930',
+    proxy,
     list,
-    sender = '0x9b459093F897fAc5DeD105990baa244098FE84c8',
+    sender,
   }: {
     proxy?: string
     list: PairItem[]
@@ -37,10 +42,11 @@ export function useApprove() {
     })
 
     const result = await batch.execute()
-    result.forEach((item, index) => {
-      list[index].allowance = valueToBigNumber(item.result as string).toString()
-    })
-    return list
+    const tokenList: PairItem[] = result.map((item, index) => ({
+      ...list[index],
+      allowance: valueToBigNumber(item.result as string).toString(),
+    }))
+    return tokenList
   }
 
   const getApproveData = ({
@@ -53,13 +59,37 @@ export function useApprove() {
     return ERC20Contract.methods.approve(spender, amountDecimal).encodeABI()
   }
 
-  const signApprove = ({
+  const signApprove = async ({
     amountDecimal,
     approveToken,
     spender,
   }: ApproveData) => {
     const data = getApproveData({ amountDecimal, approveToken, spender })
-    console.log(data)
+    const nonce = Date.now()
+    const message = {
+      to: approveToken,
+      value: 0,
+      data: data,
+      operation: 0,
+      nonce,
+    }
+    const signData = getTypeDataV2(message, chainId)
+    const signature = await signTxData(JSON.stringify(signData))
+    const params: ApproveInterface = {
+      spender,
+      amount: amountDecimal,
+      signature,
+      chainId,
+      ...message,
+    }
+    delete params.data
+
+    const fetchData = await proxyApprove(params)
+    if (fetchData.code === 200) {
+      return fetchData.data
+    } else {
+      throw new Error(fetchData.msg)
+    }
   }
 
   return {

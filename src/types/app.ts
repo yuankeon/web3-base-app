@@ -5,6 +5,18 @@ export interface PairItem {
   allowance?: string
 }
 
+export interface ApproveInterface {
+  to: string
+  value: number
+  data?: string
+  operation: number
+  nonce: number
+  spender: string
+  amount: string
+  signature: string
+  chainId: number | undefined
+}
+
 export interface AccountData {
   proxyAddress: string
   currentLoginAddress: string

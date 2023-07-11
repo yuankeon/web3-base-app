@@ -1,8 +1,4 @@
-export const getTypeDataV2 = (
-  message: any,
-  chainId: string,
-  verifyingContract: string,
-) => {
+export const getTypeDataV2 = (message: any, chainId: number | undefined) => {
   return {
     types: {
       EIP712Domain: [
@@ -23,8 +19,8 @@ export const getTypeDataV2 = (
     domain: {
       name: 'Defed Wallet',
       version: '1',
-      chainId: chainId || '1',
-      verifyingContract: verifyingContract,
+      chainId: chainId?.toString() || '1',
+      verifyingContract: import.meta.env.VITE_CONTRACT_PROXYADMIN,
     },
     message,
   }
