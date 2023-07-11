@@ -83,7 +83,7 @@ export function ContentList() {
     }
   }
 
-  const queryAllowance = async () => {
+  const queryAllowance = () => {
     if (!pairList) {
       messageApi.error('未获取到Token列表')
       return
@@ -96,12 +96,17 @@ export function ContentList() {
     const spenderAddress = inputRef.current?.input?.value || ''
     if (isAddress(spenderAddress)) {
       //批量查询当前合约的allowance
-      const list = await batchTokenAllowance({
+      batchTokenAllowance({
         list: pairList,
         sender: spenderAddress,
         proxy: userData.proxyAddress,
       })
-      setPairList(list)
+        .then((list) => {
+          setPairList(list)
+        })
+        .catch((error) => {
+          messageApi.error(error.message)
+        })
     } else {
       messageApi.error('请输入正确的合约地址')
     }

@@ -23,12 +23,12 @@ export function useApprove() {
     sender?: string
   }) => {
     const batch = new web3.BatchRequest()
-    const ERC20Contract = new web3.eth.Contract(
-      ERC20_ABI,
-      list[0].tokenAddress,
-    ) as any
 
     list.forEach((item) => {
+      const ERC20Contract = new web3.eth.Contract(
+        ERC20_ABI,
+        item.tokenAddress,
+      ) as any
       //构造jsonrpc请求，id 和 jsonrpc 非必选项
       const data = {
         data: ERC20Contract.methods.allowance(proxy, sender).encodeABI(),
