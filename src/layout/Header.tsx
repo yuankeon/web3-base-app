@@ -13,6 +13,8 @@ export function Header() {
   const { account, isActive } = useWeb3React()
   const [loading, setLoading] = useState(false)
   const { signPersonalData } = useWeb3Data()
+  const [messageApi, contextHolder] = message.useMessage()
+
   const [userData, setUserData, darkMode, setDarkMode] = useUserStore(
     (state) => [
       state.userData,
@@ -42,7 +44,7 @@ export function Header() {
   // attempt to connect eagerly on mount 刷新页面保持连接
   useEffect(() => {
     void metaMask.connectEagerly().catch(() => {
-      message.warning('Failed to connect eagerly to metamask')
+      messageApi.warning('Failed to connect eagerly to metamask')
     })
   }, [])
 
@@ -52,7 +54,7 @@ export function Header() {
         setUserData(userResult.data)
       })
       .catch((error: Error) => {
-        message.error(error.message)
+        messageApi.error(error.message)
       })
   }
 
@@ -65,13 +67,13 @@ export function Header() {
 
   const connectWallet = () => {
     metaMask.activate().catch(() => {
-      message.error('Failed to connect to metamask')
+      messageApi.error('Failed to connect to metamask')
     })
   }
 
   const handleLogin = async () => {
     if (!account) {
-      message.error('Failed to connect to metamask')
+      messageApi.error('Failed to connect to metamask')
       return
     }
     setLoading(true)
@@ -88,7 +90,7 @@ export function Header() {
       setUserData(userResult.data)
     } catch (error) {
       setLoading(false)
-      message.error((error as Error).message)
+      messageApi.error((error as Error).message)
     }
   }
 
@@ -104,6 +106,7 @@ export function Header() {
 
   return (
     <div className="header">
+      {contextHolder}
       <img src="/pic.jpg" alt="" className="logo" />
       <div style={{ flexGrow: 1 }} />
       <Tooltip

@@ -13,6 +13,7 @@ import { removeDecimals } from '@/utils/math'
 export function ContentList() {
   const [pairList, setPairList] = useState<PairItem[] | undefined>()
   const inputRef = useRef<InputRef>(null)
+  const [messageApi, contextHolder] = message.useMessage()
 
   const userData = useUserStore((state) => state.userData)
   const { signApprove } = useApprove()
@@ -24,7 +25,7 @@ export function ContentList() {
         setPairList(data)
       })
       .catch((error: Error) => {
-        message.error({
+        messageApi.error({
           content: error.message,
         })
       })
@@ -36,7 +37,7 @@ export function ContentList() {
 
   const handleApprove = (pair: PairItem, input: InputRef | null) => {
     if (!userData?.proxyAddress) {
-      message.error('请先登录')
+      messageApi.error('请先登录')
       return
     }
     //授权合约
@@ -45,7 +46,7 @@ export function ContentList() {
       const inputValue = input?.input?.value || ''
       if (!inputValue || isNaN(Number(inputValue))) {
         //输入为空或者非数字
-        message.error('请输入大于0的数字')
+        messageApi.error('请输入大于0的数字')
       } else {
         const data = signApprove({
           amountDecimal: inputValue,
@@ -55,12 +56,13 @@ export function ContentList() {
         console.log(data)
       }
     } else {
-      message.error('请输入正确的合约地址')
+      messageApi.error('请输入正确的合约地址')
     }
   }
 
   return (
     <div className="card">
+      {contextHolder}
       <div className="form-item">
         <span>当前环境:</span>
         <span>DEV</span>

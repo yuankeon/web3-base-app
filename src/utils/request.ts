@@ -1,7 +1,6 @@
 /**
  * axios的二次封装：使用请求拦截器与响应拦截器
  */
-import { message } from 'antd'
 import axios from 'axios'
 import { EnvMap } from '@/config'
 
@@ -31,7 +30,6 @@ request.interceptors.response.use(
   },
   (error) => {
     //失败回调:处理http网络错误【处理服务器端的错误】
-    message.error({ content: error.message })
     return Promise.reject(error)
   },
 )
