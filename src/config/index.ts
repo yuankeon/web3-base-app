@@ -17,6 +17,7 @@ export const TITLE = [
   },
 ]
 
-export * from './env'
+export const POLYGON_RPC = import.meta.env.VITE_POLYGON_RPC
+
 export * from './tokens'
 export * from './sign'

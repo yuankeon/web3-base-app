@@ -65,7 +65,7 @@ export function ContentList() {
       {contextHolder}
       <div className="form-item">
         <span>当前环境:</span>
-        <span>DEV</span>
+        <span>{import.meta.env.VITE_USER_NODE_ENV.toUpperCase()}</span>
       </div>
 
       <div className="form-item">

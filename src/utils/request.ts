@@ -2,11 +2,11 @@
  * axios的二次封装：使用请求拦截器与响应拦截器
  */
 import axios from 'axios'
-import { EnvMap } from '@/config'
+console.log(import.meta.env)
 
 //第一步:利用axios对象的create方法,去创建axios实例(其他的配置:基础路径、超时的时间)
 const request = axios.create({
-  baseURL: EnvMap['test'].http, // axios请求接口时候自动携带的基础路径
+  baseURL: import.meta.env.VITE_APPURL, // axios请求接口时候自动携带的基础路径
   timeout: 10000, //超时的时间的设置
 })
 

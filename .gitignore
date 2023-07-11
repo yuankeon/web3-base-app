@@ -24,7 +24,9 @@ dist-ssr
 *.sw?
 
 # 配置文件
-src/config/env.ts
+.env
+.env.test
+.env.production
 
 # 打包分析文件
 stats.html
