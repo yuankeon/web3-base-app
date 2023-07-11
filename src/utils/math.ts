@@ -2,7 +2,7 @@ import { BigNumber } from 'bignumber.js'
 
 type BigNumberValue = string | number
 
-const valueToBigNumber = (value: BigNumberValue) => new BigNumber(value)
+export const valueToBigNumber = (value: BigNumberValue) => new BigNumber(value)
 
 //精度 => 移除精度
 export const removeDecimals = (value: BigNumberValue, decimals: number) =>
