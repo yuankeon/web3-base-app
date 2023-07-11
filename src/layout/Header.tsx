@@ -94,13 +94,17 @@ export function Header() {
     }
   }
 
-  const toggleTheme = () => {
+  //监听当前的darkMode，动态切换样式
+  useEffect(() => {
     const html = document.querySelector('html')
     if (darkMode) {
-      html?.classList.remove('dark')
-    } else {
       html?.classList.add('dark')
+    } else {
+      html?.classList.remove('dark')
     }
+  }, [darkMode])
+
+  const toggleTheme = () => {
     setDarkMode()
   }
 
