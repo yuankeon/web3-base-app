@@ -108,6 +108,11 @@ export function Header() {
     setDarkMode()
   }
 
+  const handleCopy = async (toCopy: string) => {
+    await navigator.clipboard.writeText(toCopy)
+    messageApi.success('Copied to clipboard~')
+  }
+
   return (
     <div className="header">
       {contextHolder}
@@ -129,12 +134,14 @@ export function Header() {
       {account ? (
         <div className="header-wallet">
           {getName(metaMask)}:
-          <div className="header-account">
-            <div className="header-account-icon">
-              <Avatar account={account} />
+          <Tooltip placement="bottom" title={'Copy'}>
+            <div className="header-account" onClick={() => handleCopy(account)}>
+              <div className="header-account-icon">
+                <Avatar account={account} />
+              </div>
+              <span>{getShortAddress(account)}</span>
             </div>
-            <span>{getShortAddress(account)}</span>
-          </div>
+          </Tooltip>
           {!userData ? (
             <Button type="primary" onClick={handleLogin} loading={loading}>
               Login
@@ -142,12 +149,17 @@ export function Header() {
           ) : (
             <div className="header-wallet">
               <span style={{ marginLeft: 8 }}>Proxy:</span>
-              <div className="header-account">
-                <div className="header-account-icon">
-                  <Avatar account={userData.proxyAddress} />
+              <Tooltip placement="bottom" title={'Copy'}>
+                <div
+                  className="header-account"
+                  onClick={() => handleCopy(userData.proxyAddress)}
+                >
+                  <div className="header-account-icon">
+                    <Avatar account={userData.proxyAddress} />
+                  </div>
+                  <span>{getShortAddress(userData.proxyAddress)}</span>
                 </div>
-                <span>{getShortAddress(userData.proxyAddress)}</span>
-              </div>
+              </Tooltip>
             </div>
           )}
         </div>

@@ -16,14 +16,14 @@ export function ContentList() {
   const [messageApi, contextHolder] = message.useMessage()
 
   const userData = useUserStore((state) => state.userData)
-  const { signApprove, batchTokenAllowance } = useApprove()
+  const { signApprove } = useApprove()
 
   function getPairList() {
     getTokens()
       .then(async (res) => {
         const data = reduceData(res.data)
-        const list = await batchTokenAllowance({ list: data })
-        setPairList(list)
+        // const list = await batchTokenAllowance({ list: data })
+        setPairList(data)
       })
       .catch((error: Error) => {
         messageApi.error({

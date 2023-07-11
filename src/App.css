@@ -31,10 +31,16 @@
   display: flex;
   align-items: center;
   border-radius: 32px;
-  height: 36px;
+  cursor: pointer;
+  height: 34px;
   padding: 0 14px;
   margin: 0 8px;
   background-color: rgba(var(--base-buttonBackground));
+  border: 1px solid transparent;
+}
+
+.header-account:hover {
+  border-color: rgba(var(--base-borderColor));
 }
 
 .header-account-icon {
