@@ -1,4 +1,6 @@
+import { getConnections } from '@/connectors'
 import { Drawer } from 'antd'
+import { WalletOption } from './WalletOption'
 
 export function WalletDrawer({
   onClose,
@@ -7,6 +9,8 @@ export function WalletDrawer({
   open: boolean
   onClose: () => void
 }) {
+  const connections = getConnections()
+
   return (
     <Drawer
       title="Connect a wallet"
@@ -14,9 +18,9 @@ export function WalletDrawer({
       onClose={onClose}
       open={open}
     >
-      <p>metamask...</p>
-      <p>coinbase...</p>
-      <p>wallet connect...</p>
+      {connections.map((connection) => (
+        <WalletOption key={connection.getName()} connection={connection} />
+      ))}
     </Drawer>
   )
 }
