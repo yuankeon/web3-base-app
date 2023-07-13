@@ -15,7 +15,7 @@ import {
 } from './walletConnectV2'
 
 export const connectors: [
-  MetaMask | CoinbaseWallet | WalletConnectV2,
+  MetaMask | WalletConnectV2 | CoinbaseWallet,
   Web3ReactHooks,
 ][] = [
   [metaMask, metaMaskHooks],

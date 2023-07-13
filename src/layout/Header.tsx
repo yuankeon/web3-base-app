@@ -8,12 +8,14 @@ import { SvgIcon } from '@/components/SvgIcon'
 import { getNonce, postToken, getUserInfo } from '@/api/user'
 import { useWeb3Data } from '@/hooks/useWeb3Data'
 import { useUserStore } from '@/store'
+import { WalletDrawer } from '@/components/Wallet'
 
 export function Header() {
   const { account, isActive } = useWeb3React()
   const [loading, setLoading] = useState(false)
   const { signPersonalData } = useWeb3Data()
   const [messageApi, contextHolder] = message.useMessage()
+  const [openMenu, setOpenMenu] = useState(false)
 
   const [userData, setUserData, darkMode, setDarkMode] = useUserStore(
     (state) => [
@@ -66,9 +68,10 @@ export function Header() {
   }, [account])
 
   const connectWallet = () => {
-    metaMask.activate().catch(() => {
-      messageApi.error('Failed to connect to metamask')
-    })
+    setOpenMenu(true)
+    // metaMask.activate().catch(() => {
+    //   messageApi.error('Failed to connect to metamask')
+    // })
   }
 
   const handleLogin = async () => {
@@ -113,9 +116,12 @@ export function Header() {
     messageApi.success('Copied to clipboard~')
   }
 
+  const handleClose = () => setOpenMenu(false)
+
   return (
     <div className="header">
       {contextHolder}
+      <WalletDrawer open={openMenu} onClose={handleClose} />
       <img src="/pic.jpg" alt="" className="logo" />
       <div style={{ flexGrow: 1 }} />
       <Tooltip
