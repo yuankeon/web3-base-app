@@ -1,8 +1,30 @@
-.wallet-option {
+.option-grid {
+  display: grid;
+  gap: 2px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.wallet-wrapper {
   display: flex;
+  align-items: center;
+  padding: 16px;
+  background-color: rgba(var(--base-buttonBackground));
+  user-select: none;
+}
+
+.wallet-wrapper:hover {
+  background-color: rgba(173, 188, 255, 0.24);
+  cursor: pointer;
 }
 
 .wallet-img {
   width: 40px;
   height: 40px;
+}
+
+.wallet-name {
+  margin-left: 10px;
+  font-size: 16px;
+  font-weight: 600;
 }

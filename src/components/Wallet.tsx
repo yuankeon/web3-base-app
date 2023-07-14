@@ -1,6 +1,7 @@
 import { getConnections } from '@/connectors'
 import { Drawer } from 'antd'
 import { WalletOption } from './WalletOption'
+import './css/wallet.css'
 
 export function WalletDrawer({
   onClose,
@@ -18,9 +19,11 @@ export function WalletDrawer({
       onClose={onClose}
       open={open}
     >
-      {connections.map((connection) => (
-        <WalletOption key={connection.getName()} connection={connection} />
-      ))}
+      <div className="option-grid">
+        {connections.map((connection) => (
+          <WalletOption key={connection.getName()} connection={connection} />
+        ))}
+      </div>
     </Drawer>
   )
 }

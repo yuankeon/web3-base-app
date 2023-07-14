@@ -3,6 +3,7 @@
  * https://github.com/Uniswap/web3-react/blob/main/example/components/ProviderExample.tsx
  */
 import { Web3ReactHooks } from '@web3-react/core'
+import { Connector } from '@web3-react/types'
 import type { MetaMask } from '@web3-react/metamask'
 import type { CoinbaseWallet } from '@web3-react/coinbase-wallet'
 import type { WalletConnect as WalletConnectV2 } from '@web3-react/walletconnect-v2'
@@ -105,4 +106,26 @@ const coinbaseWalletConnection: Connection = {
     }
     return false
   },
+}
+
+//获取当前的 Connetor 实例
+export function getConnection(c: Connector | ConnectionType) {
+  if (c instanceof Connector) {
+    const connection = getConnections().find(
+      (connection) => connection.connector === c,
+    )
+    if (!connection) {
+      throw Error('unsupported connector')
+    }
+    return connection
+  } else {
+    switch (c) {
+      case ConnectionType.INJECTED:
+        return injectedConnection
+      case ConnectionType.COINBASE_WALLET:
+        return coinbaseWalletConnection
+      case ConnectionType.WALLET_CONNECT_V2:
+        return walletConnectV2Connection
+    }
+  }
 }

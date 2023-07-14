@@ -1,13 +1,12 @@
 import { Connection } from '@/types/wallet'
 import { SvgIcon } from './SvgIcon'
 import { useUserStore } from '@/store'
-import './css/wallet.css'
 
 export function WalletOption({ connection }: { connection: Connection }) {
   const darkMode = useUserStore((state) => state.darkMode)
 
   return (
-    <div className="wallet-option">
+    <div className="wallet-wrapper">
       <div className="wallet-img">
         <SvgIcon
           iconName={connection.getIcon?.(darkMode) as string}
@@ -16,6 +15,7 @@ export function WalletOption({ connection }: { connection: Connection }) {
           borderRadius="12px"
         />
       </div>
+      <span className="wallet-name">{connection.getName()}</span>
     </div>
   )
 }
