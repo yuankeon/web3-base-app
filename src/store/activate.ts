@@ -24,11 +24,16 @@ type ActivationState =
 
 interface Activate {
   activationState: ActivationState
+  accountDrawerOpen: boolean //打开和关闭侧边菜单
   setActivationState: (state: ActivationState) => void
+  toggleAccountDrawerOpen: () => void
 }
 
 export const useActivateStore = create<Activate>((set) => ({
   activationState: IDLE_ACTIVATION_STATE,
+  accountDrawerOpen: false,
   setActivationState: (state: ActivationState) =>
     set({ activationState: state }),
+  toggleAccountDrawerOpen: () =>
+    set((state) => ({ accountDrawerOpen: !state.accountDrawerOpen })),
 }))

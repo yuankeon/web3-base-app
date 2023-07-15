@@ -1,30 +1,42 @@
 import { Avatar } from '@/components/Avatar'
-import { getName, getShortAddress } from '@/utils'
+import { getShortAddress } from '@/utils'
 import { Button, Tooltip, message } from 'antd'
 import { useWeb3React } from '@web3-react/core'
-import { metaMask } from '@/connectors/metaMask'
 import { useEffect, useState } from 'react'
 import { SvgIcon } from '@/components/SvgIcon'
 import { getNonce, postToken, getUserInfo } from '@/api/user'
 import { useWeb3Data } from '@/hooks/useWeb3Data'
 import { useUserStore } from '@/store'
 import { WalletDrawer } from '@/components/Wallet'
+import { useActivateStore } from '@/store/activate'
+import { getConnection } from '@/connectors'
 
 export function Header() {
-  const { account, isActive } = useWeb3React()
+  const { account, isActive, connector } = useWeb3React()
   const [loading, setLoading] = useState(false)
   const { signPersonalData } = useWeb3Data()
   const [messageApi, contextHolder] = message.useMessage()
-  const [openMenu, setOpenMenu] = useState(false)
 
-  const [userData, setUserData, darkMode, setDarkMode] = useUserStore(
-    (state) => [
+  //当前连接的钱包
+  const connection = getConnection(connector)
+
+  const [userData, setUserData, darkMode, setDarkMode, setWallet] =
+    useUserStore((state) => [
       state.userData,
       state.setUserData,
       state.darkMode,
       state.setDarkMode,
-    ],
+      state.setWallet,
+    ])
+
+  const [accountDrawerOpen, toggleAccountDrawerOpen] = useActivateStore(
+    (state) => [state.accountDrawerOpen, state.toggleAccountDrawerOpen],
   )
+
+  const resetUserInfo = () => {
+    localStorage.removeItem('token')
+    setUserData(undefined)
+  }
 
   useEffect(() => {
     //用户直接切换账号
@@ -32,8 +44,7 @@ export function Header() {
     if (ethereum && isActive) {
       const handleAccountsChanged = () => {
         console.log('account changed')
-        localStorage.removeItem('token')
-        setUserData(undefined)
+        resetUserInfo()
       }
       ethereum.on('accountsChanged', handleAccountsChanged)
       return () => {
@@ -43,12 +54,17 @@ export function Header() {
     return undefined
   }, [isActive])
 
-  // attempt to connect eagerly on mount 刷新页面保持连接
-  useEffect(() => {
-    void metaMask.connectEagerly().catch(() => {
-      messageApi.warning('Failed to connect eagerly to metamask')
-    })
-  }, [])
+  //钱包断开连接
+  const disconnect = () => {
+    if (userData) {
+      resetUserInfo()
+    }
+    if (connector && connector.deactivate) {
+      connector.deactivate()
+    }
+    connector.resetState()
+    setWallet(undefined)
+  }
 
   const initUserInfo = async () => {
     getUserInfo()
@@ -67,16 +83,9 @@ export function Header() {
     }
   }, [account])
 
-  const connectWallet = () => {
-    setOpenMenu(true)
-    // metaMask.activate().catch(() => {
-    //   messageApi.error('Failed to connect to metamask')
-    // })
-  }
-
   const handleLogin = async () => {
     if (!account) {
-      messageApi.error('Failed to connect to metamask')
+      messageApi.error('Failed to connect to wallet')
       return
     }
     setLoading(true)
@@ -116,12 +125,13 @@ export function Header() {
     messageApi.success('Copied to clipboard~')
   }
 
-  const handleClose = () => setOpenMenu(false)
-
   return (
     <div className="header">
       {contextHolder}
-      <WalletDrawer open={openMenu} onClose={handleClose} />
+      <WalletDrawer
+        open={accountDrawerOpen}
+        onClose={toggleAccountDrawerOpen}
+      />
       <img src="/pic.jpg" alt="" className="logo" />
       <div style={{ flexGrow: 1 }} />
       <Tooltip
@@ -139,7 +149,12 @@ export function Header() {
 
       {account ? (
         <div className="header-wallet">
-          {getName(metaMask)}:
+          <Tooltip placement="bottom" title={`Disconnect`}>
+            <Button className="mode" onClick={disconnect}>
+              <SvgIcon iconName={'logout'} width="20px" height="20px" />
+            </Button>
+          </Tooltip>
+          {connection.getName()}:
           <Tooltip placement="bottom" title={'Copy'}>
             <div className="header-account" onClick={() => handleCopy(account)}>
               <div className="header-account-icon">
@@ -170,7 +185,7 @@ export function Header() {
           )}
         </div>
       ) : (
-        <Button type="primary" onClick={connectWallet} size="large">
+        <Button type="primary" onClick={toggleAccountDrawerOpen} size="large">
           Connect Wallet
         </Button>
       )}

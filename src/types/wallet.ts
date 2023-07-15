@@ -16,3 +16,5 @@ export interface Connection {
   shouldDisplay(): boolean
   overrideActivate?: () => boolean
 }
+
+export type Wallet = ConnectionType | undefined

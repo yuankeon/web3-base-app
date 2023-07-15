@@ -4,9 +4,13 @@ import { ContentList } from '@/layout/Content'
 import { Footer } from '@/layout/Footer'
 import { ConfigProvider, theme } from 'antd'
 import { useUserStore } from './store'
+import { useEagerlyConnect } from '@/hooks/useConnectWallet'
 
 function App() {
   const darkMode = useUserStore((state) => state.darkMode)
+
+  //尝试主动连接钱包
+  useEagerlyConnect()
 
   return (
     <ConfigProvider

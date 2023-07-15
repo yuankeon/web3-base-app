@@ -11,11 +11,17 @@
   padding: 16px;
   background-color: rgba(var(--base-buttonBackground));
   user-select: none;
+  justify-content: space-between;
 }
 
 .wallet-wrapper:hover {
   background-color: rgba(173, 188, 255, 0.24);
   cursor: pointer;
+}
+
+.wallet-left {
+  display: flex;
+  align-items: center;
 }
 
 .wallet-img {

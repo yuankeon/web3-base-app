@@ -6,8 +6,9 @@
   1. 包含基本 web3 方法，如钱包连接、普通签名、712 签名、网络切换等
   2. 使用 Eslint + Prettier 代码规范
   3. 使用 husky 管理代码提交
+  4. 使用 React + Vite + zustand + antd 等
 - 后端、合约开箱即可联调 approve 功能
-- 支持 Metamask、Coinbase、WalletConnect 等众多插件钱包
+- 支持 Metamask、Coinbase、WalletConnect 等插件钱包
 
 ## 快速开始
 
