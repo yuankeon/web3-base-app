@@ -24,7 +24,6 @@ dist-ssr
 *.sw?
 
 # 配置文件
-.env
 .env.test
 .env.production
 
