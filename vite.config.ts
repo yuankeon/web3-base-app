@@ -40,7 +40,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
-      web3: resolve(__dirname, './node_modules/web3/dist/web3.min.js'),
+      // web3: resolve(__dirname, './node_modules/web3/dist/web3.min.js'),
+      '@walletconnect/ethereum-provider': resolve(
+        __dirname,
+        './node_modules/@walletconnect/ethereum-provider/dist/index.umd.js',
+      ),
     },
   },
   build: {
