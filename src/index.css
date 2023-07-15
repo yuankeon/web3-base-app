@@ -24,3 +24,7 @@ body {
   height: 100vh;
   color: rgb(var(--base-textColor));
 }
+
+.ant-drawer {
+  z-index: 50;
+}
